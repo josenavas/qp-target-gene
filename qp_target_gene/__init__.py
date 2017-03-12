@@ -11,6 +11,7 @@ from qiita_client import QiitaPlugin, QiitaCommand
 from .split_libraries import split_libraries, split_libraries_fastq
 from .pick_otus import pick_closed_reference_otus
 from .trimming import trimming
+from .beta_diversity import beta_diversity
 
 # Initialize the plugin
 plugin = QiitaPlugin(
@@ -169,3 +170,26 @@ trim_cmd = QiitaCommand(
     "Trimming", "Trimming sequences to the same length",
     trimming, req_params, opt_params, outputs, dflt_param_set)
 plugin.register_command(trim_cmd)
+
+# Define the beta diversity command
+req_params = {'biom_table': ('artifact', ['BIOM'])}
+opt_params = {'tree': ['string', 'Default'],
+              'metric': ['choice:["abund_jaccard","binary_chisq",'
+                         '"binary_chord","binary_euclidean","binary_hamming",'
+                         '"binary_jaccard","binary_lennon","binary_ochiai",'
+                         '"binary_otu_gain","binary_pearson",'
+                         '"binary_sorensen_dice","bray_curtis",'
+                         '"bray_curtis_faith","bray_curtis_magurran",'
+                         '"canberra","chisq","chord","euclidean","gower",'
+                         '"hellinger","kulczynski","manhattan",'
+                         '"morisita_horn","pearson","soergel",'
+                         '"spearman_approx","specprof","unifrac","unifrac_g",'
+                         '"unifrac_g_full_tree","unweighted_unifrac",'
+                         '"unweighted_unifrac_full_tree",'
+                         '"weighted_normalized_unifrac","weighted_unifrac"]',
+                         'binary_jaccard']}
+outputs = {'distance_matrix': 'distance_matrix'}
+dflt_param_set = {'Binary jaccard': {'tree': None, 'metric': 'binary_jaccard'}}
+bdiv_cmd = QiitaCommand(
+    "Beta Diversity", "Computes and plots beta diversity results",
+    beta_diversity, req_params, opt_params, outputs, dflt_param_set)

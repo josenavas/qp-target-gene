@@ -8,7 +8,6 @@
 
 from os.path import join
 
-import pandas as pd
 from qiita_client import ArtifactInfo
 
 from qp_target_gene.util import (

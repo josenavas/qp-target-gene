@@ -87,7 +87,7 @@ class BetaDivesityTests(PluginTestCase):
         obs_success, obs_ainfo, obs_msg = beta_diversity(
             self.qclient, job_id, parameters, self.tmp_dir)
         exp_ainfo = [ArtifactInfo('distance_matrix', 'distance_matrix',
-                                  [join(self.tmp_dir, 'bdiv'), 'directory'])]
+                                  [(join(self.tmp_dir, 'bdiv'), 'directory')])]
         self.assertTrue(obs_success)
         self.assertEqual(obs_ainfo, exp_ainfo)
         self.assertEqual(obs_msg, "")

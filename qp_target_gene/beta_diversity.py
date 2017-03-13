@@ -90,6 +90,6 @@ def beta_diversity(qclient, job_id, parameters, out_dir):
         return False, None, error_msg
 
     artifacts_info = [ArtifactInfo('distance_matrix', 'distance_matrix',
-                                   [bdiv_out, 'directory'])]
+                                   [(bdiv_out, 'directory')])]
 
     return True, artifacts_info, ""

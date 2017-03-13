@@ -11,7 +11,8 @@ from os.path import join
 import pandas as pd
 from qiita_client import ArtifactInfo
 
-from qp_target_gene.util import system_call
+from qp_target_gene.util import (
+    system_call, write_mapping_file_from_metadata_dict)
 
 
 def generate_beta_diversity_cmd(biom_fp, metadata, parameters, out_dir):
@@ -37,9 +38,7 @@ def generate_beta_diversity_cmd(biom_fp, metadata, parameters, out_dir):
     mapping_fp = join(out_dir, 'mapping_file.txt')
     param_fp = join(out_dir, 'parameters_file.txt')
 
-    df = pd.DataFrame.from_dict(metadata, orient='index')
-    df.to_csv(mapping_fp, index_label='#SampleID', sep='\t',
-              encoding='utf-8')
+    write_mapping_file_from_metadata_dict(metadata, mapping_fp)
 
     with open(param_fp, 'w') as f:
         f.write("beta_diversity:metrics\t%s" % parameters['metric'])

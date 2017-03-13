@@ -34,8 +34,14 @@ class BetaDivesityTests(PluginTestCase):
                     remove(fp)
 
     def test_generate_beta_diversity_cmd(self):
-        metadata = {'sample1': {'col1': 'Data'},
-                    'sample2': {'col1': 'More data'}}
+        metadata = {'sample1': {'col1': 'Data',
+                                'BarcodeSequence': 'CGGCCTAAGTTC',
+                                'Description': 'Cannabis Soil Microbiome',
+                                'LinkerPrimerSequence': 'GTGCCAGCMGCCGCGGTAA'},
+                    'sample2': {'col1': 'More data',
+                                'BarcodeSequence': 'AGCGCTCACATC',
+                                'Description': 'Cannabis Soil Microbiome',
+                                'LinkerPrimerSequence': 'GTGCCAGCMGCCGCGGTAA'}}
         parameters = {'tree': None,
                       'metric': 'bray_curtis',
                       'biom_table': '1'}

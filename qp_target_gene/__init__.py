@@ -13,6 +13,7 @@ from .pick_otus import pick_closed_reference_otus
 from .trimming import trimming
 from .beta_diversity import beta_diversity
 from .summarize_taxa import summarize_taxa
+from .single_rarefaction import single_rarefaction
 
 # Initialize the plugin
 plugin = QiitaPlugin(
@@ -194,6 +195,7 @@ dflt_param_set = {'Binary jaccard': {'tree': None, 'metric': 'binary_jaccard'}}
 bdiv_cmd = QiitaCommand(
     "Beta Diversity", "Computes and plots beta diversity results",
     beta_diversity, req_params, opt_params, outputs, dflt_param_set)
+plugin.register_command(bdiv_cmd)
 
 # Define the summarize taxa command
 req_params = {'biom_table': ('artifact', ['BIOM'])}
@@ -201,6 +203,19 @@ opt_params = {'sort': ['bool', 'False'],
               'metadata_category': ['string', '']}
 outputs = {'taxa_summary': 'taxa_summary'}
 dflt_param_set = {'Defaults': {'sort': 'False', 'metadata_category': ''}}
-bdiv_cmd = QiitaCommand(
+sumtaxa_cmd = QiitaCommand(
     "Summarize Taxa", "Plots taxonomy summaries at different taxonomy levels",
     summarize_taxa, req_params, opt_params, outputs, dflt_param_set)
+plugin.register_command(sumtaxa_cmd)
+
+# Define the singler rarefaction command
+req_params = {'biom_table': ('artifact', ['BIOM']),
+              'depth': 'integer'}
+opt_params = {'subsample_multinomial': ['bool', 'False']}
+outputs = {'rarefied_table': 'BIOM'}
+dflt_param_set = {'Defaults': {'subsample_multinomial': 'False'}}
+srare_cmd = QiitaCommand(
+    "Single Rarefaction",
+    "Rarefies the input table by random sampling without replacement",
+    single_rarefaction, req_params, opt_params, outputs, dflt_param_set)
+plugin.register_command(srare_cmd)

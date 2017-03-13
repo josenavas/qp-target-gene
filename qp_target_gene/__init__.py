@@ -14,6 +14,7 @@ from .trimming import trimming
 from .beta_diversity import beta_diversity
 from .summarize_taxa import summarize_taxa
 from .single_rarefaction import single_rarefaction
+from .alpha_rarefaction import alpha_rarefaction
 
 # Initialize the plugin
 plugin = QiitaPlugin(
@@ -219,3 +220,29 @@ srare_cmd = QiitaCommand(
     "Rarefies the input table by random sampling without replacement",
     single_rarefaction, req_params, opt_params, outputs, dflt_param_set)
 plugin.register_command(srare_cmd)
+
+# Define the alpha rarefaction command
+req_params = {'biom_table': ('artifact', ['BIOM'])}
+opt_params = {'tree': ['string', ''],
+              'num_steps': ['integer', '10'],
+              'min_rare_depth': ['integer', '10'],
+              'max_rare_depth': ['integer', 'Default'],
+              'metrics': ['mchoice:["ace","berger_parker_d","brillouin_d",'
+                          '"chao1","chao1_ci","dominance","doubles","enspie",'
+                          '"equitability","esty_ci","fisher_alpha",'
+                          '"gini_index","goods_coverage","heip_e",'
+                          '"kempton_taylor_q","margalef","mcintosh_d",'
+                          '"mcintosh_e","menhinick","michaelis_menten_fit",'
+                          '"observed_otus","observed_species","osd",'
+                          '"simpson_reciprocal","robbins","shannon",'
+                          '"simpson","simpson_e","singles","strong",'
+                          '"PD_whole_tree"]', '["chao1", "observed_otus"]']}
+dflt_param_set = {'Defaults': {'tree': None, 'num_steps': '10',
+                               'min_rare_depth': '10',
+                               'max_rare_depth': 'Default',
+                               'metrics': ['chao1', 'observed_otus']}}
+arare_cmd = QiitaCommand(
+    "Alpha Rarefaction",
+    "Computes and plots alpha rarefaction results",
+    alpha_rarefaction, req_params, opt_params, outputs, dflt_param_set)
+plugin.register_command(arare_cmd)

@@ -12,6 +12,7 @@ from .split_libraries import split_libraries, split_libraries_fastq
 from .pick_otus import pick_closed_reference_otus
 from .trimming import trimming
 from .beta_diversity import beta_diversity
+from .summarize_taxa import summarize_taxa
 
 # Initialize the plugin
 plugin = QiitaPlugin(
@@ -193,3 +194,13 @@ dflt_param_set = {'Binary jaccard': {'tree': None, 'metric': 'binary_jaccard'}}
 bdiv_cmd = QiitaCommand(
     "Beta Diversity", "Computes and plots beta diversity results",
     beta_diversity, req_params, opt_params, outputs, dflt_param_set)
+
+# Define the summarize taxa command
+req_params = {'biom_table': ('artifact', ['BIOM'])}
+opt_params = {'sort': ['bool', 'False'],
+              'metadata_category': ['string', '']}
+outputs = {'taxa_summary': 'taxa_summary'}
+dflt_param_set = {'Defaults': {'sort': 'False', 'metadata_category': ''}}
+bdiv_cmd = QiitaCommand(
+    "Summarize Taxa", "Plots taxonomy summaries at different taxonomy levels",
+    summarize_taxa, req_params, opt_params, outputs, dflt_param_set)

@@ -8,6 +8,9 @@
 
 from subprocess import Popen, PIPE
 
+import pandas as pd
+
+
 JOB_COMPLETED = False
 
 
@@ -41,3 +44,28 @@ def system_call(cmd):
     stdout, stderr = proc.communicate()
     return_value = proc.returncode
     return stdout, stderr, return_value
+
+
+def write_mapping_file_from_metadata_dict(metadata, output_fp):
+    """Writes a QIIME mapping file to output_fp
+
+    Parameters
+    ----------
+    metadata : dict of dicts
+        The metadata, keyed first by sample id and then by column
+    output_fp : str
+        The path to the output mapping file
+    """
+    df = pd.DataFrame.from_dict(metadata, orient='index')
+
+    # Make sure that the columns are in the order the QIIME expects
+    new_cols = ['BarcodeSequence', 'LinkerPrimerSequence']
+    cols = df.columns.tolist()
+    cols.remove('BarcodeSequence')
+    cols.remove('LinkerPrimerSequence')
+    cols.remove('Description')
+    new_cols.extend(sorted(cols))
+    new_cols.append('Description')
+    df = df[new_cols]
+
+    df.to_csv(output_fp, index_label='#SampleID', sep='\t', encoding='utf-8')
